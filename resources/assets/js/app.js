@@ -15,7 +15,13 @@ window.Vue = require('vue');
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
 
-Vue.component('example-component', require('./components/ExampleComponent.vue'));
+import Clients from './components/passport/Clients'
+import AuthorizedClients from './components/passport/AuthorizedClients'
+import PersonalAccessTokens from './components/passport/PersonalAccessTokens'
+
+Vue.component('passport-clients', Clients);
+Vue.component('passport-authorized-clients', AuthorizedClients);
+Vue.component('passport-personal-access-tokens',PersonalAccessTokens);
 
 const app = new Vue({
     el: '#app'
