@@ -19,4 +19,18 @@ Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 
-Route::get('/', 'GameController@index');
+
+//GameController//
+
+Route::get('/games', 'GameController@index');
+
+Route::get('/games/{game}', 'GameController@show');
+
+
+//downloads//
+
+Route::get('/games/{game}/download', 'GameController@download');
+
+
+
+

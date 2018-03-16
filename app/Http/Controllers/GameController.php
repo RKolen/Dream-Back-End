@@ -14,10 +14,15 @@ class GameController extends Controller
      */
     public function index()
     {
-        $games = Game::get();
-       // return $games;
+        $discover = Game::orderBy('downloads', 'asc')->take(4)->get()->toArray();
+        $spotlight = Game::orderBy('downloads', 'desc')->take(1)->get()->toArray();
+      
+        $games = new \stdClass();
+        $games->discover = $discover;
+        $games->spotlight = $spotlight;
+        
         $json = json_encode($games);
-      //  return view('index', compact('games'));
+
         return $json;
     }
 
@@ -50,7 +55,9 @@ class GameController extends Controller
      */
     public function show(Game $game)
     {
-        //
+         $json = json_encode($game);
+         dd($json);
+         return $json;
     }
 
     /**
@@ -85,5 +92,10 @@ class GameController extends Controller
     public function destroy(Game $game)
     {
         //
+    }
+    public function download($game) {
+        
+        $path = storage_path('app\private\games\\' . $game . '\download.jpg');
+        return response()->download($path);
     }
 }
