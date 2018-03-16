@@ -26,6 +26,10 @@ Route::get('/games', 'GameController@index');
 
 Route::get('/games/{game}', 'GameController@show');
 
+Route::get('/games/{game}/image', 'GameController@image');
+
+
+
 
 //downloads//
 

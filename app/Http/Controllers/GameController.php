@@ -56,7 +56,7 @@ class GameController extends Controller
     public function show(Game $game)
     {
          $json = json_encode($game);
-         dd($json);
+
          return $json;
     }
 
@@ -93,9 +93,17 @@ class GameController extends Controller
     {
         //
     }
-    public function download($game) {
+    public function download($game)
+    {
         
         $path = storage_path('app\private\games\\' . $game . '\download.jpg');
         return response()->download($path);
     }
+
+    public function image($game)
+    {   
+        $path = storage_path('app\private\games\\' . $game . '\pictures\download.jpg');
+        return response()->file($path);
+        
+     }
 }
