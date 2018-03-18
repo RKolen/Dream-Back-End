@@ -63,33 +63,37 @@
                 margin-bottom: 30px;
             }
         </style>
+       <meta name="csrf-token" content="{{ csrf_token() }}">
     </head>
     <body>
-        <div class="flex-center position-ref full-height">
-            @if (Route::has('login'))
-                <div class="top-right links">
-                    @auth
-                        <a href="{{ url('/home') }}">Home</a>
-                    @else
-                        <a href="{{ route('login') }}">Login</a>
-                        <a href="{{ route('register') }}">Register</a>
-                    @endauth
-                </div>
-            @endif
+        <form action="upload" id="upload" enctype="multipart/form-data">
+            {{ csrf_field() }}
+            <input type="file" name="file[]" multiple><br />
+            <input type="submit">
+        </form>
+        <div id="message"></div>
 
-            <div class="content">
-                <div class="title m-b-md">
-                    Laravel
-                </div>
+        <script>
+            var form = document.getElementById('upload');
+            var request = new XMLHttpRequest();
 
-                <div class="links">
-                    <a href="https://laravel.com/docs">Documentation</a>
-                    <a href="https://laracasts.com">Laracasts</a>
-                    <a href="https://laravel-news.com">News</a>
-                    <a href="https://forge.laravel.com">Forge</a>
-                    <a href="https://github.com/laravel/laravel">GitHub</a>
-                </div>
-            </div>
-        </div>
+            form.addEventListener('submit', function(e)
+            {
+                e.preventDefault();
+                var formdata = new FormData(form);
+
+                request.open('post', '/upload');
+                request.addEventListener("load", transferComplete);
+                request.send(formdata);
+            });
+            function transferComplete(data)
+            {
+               response = JSON.parse( data.currentTarget.response);
+               if(response.success)
+               {
+                document.getElementById("message").innerHTML = "Successfully uploaded files!";
+               }
+            }
+        </script>
     </body>
 </html>

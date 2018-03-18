@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Game;
+use Storage;
 use Illuminate\Http\Request;
 
 class GameController extends Controller
@@ -106,4 +107,17 @@ class GameController extends Controller
         return response()->file($path);
         
      }
+    public function upload(Request $request)
+    {
+       $files = $request->file('file');
+
+       if(!empty($files)):
+
+        foreach($files as $file):
+            Storage::put($file->getClientOriginalName(), file_get_contents($file));
+        endforeach;
+
+        endif;
+       return \Response::json(array('success' => true));
+    }
 }

@@ -35,6 +35,8 @@ Route::get('/games/{game}/image', 'GameController@image');
 
 Route::get('/games/{game}/download', 'GameController@download');
 
+//uploads//
 
+Route::post('upload', 'GameController@upload');
 
 
