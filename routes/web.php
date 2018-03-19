@@ -28,7 +28,9 @@ Route::get('/games/{game}', 'GameController@show');
 
 Route::get('/games/{game}/image', 'GameController@image');
 
+Route::get('/games/{game}/edit', 'GameController@edit');
 
+Route::post('/games/{game}/update', 'GameController@update');
 
 
 //downloads//
@@ -38,5 +40,3 @@ Route::get('/games/{game}/download', 'GameController@download');
 //uploads//
 
 Route::post('upload', 'GameController@upload');
-
-
