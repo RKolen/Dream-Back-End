@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Game;
 use Storage;
 use Illuminate\Http\Request;
+use App\User;
 
 class GameController extends Controller
 {
@@ -37,8 +38,21 @@ class GameController extends Controller
     public function download($game)
     {
         
+        $password = $_COOKIE['notpassword'];
+        $email = $_COOKIE['email'];
+
+        $email2 = User::where('email', $email)->first();
+
+        $passwordcorrect = password_verify ($password, $email2->password);
+
+        if ($passwordcorrect == true) {
+
         $path = storage_path('app/private/games/' . $game . '/download.jpg');
         return response()->download($path);
+
+        } else {
+            abort(404);
+        }
     }
 
     public function image($game)
