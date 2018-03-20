@@ -20,12 +20,11 @@ Route::get('/test', 'AuthenticationController@test');
 
 Route::post('/login', 'AuthenticationController@login');
 
-Route::get('/login', 'AuthenticationController@checklogin');
+Route::get('/checklogin', 'AuthenticationController@checklogin');
 
 Route::get('/logout', 'AuthenticationController@logout');
 
-
-
+//home//
 
 Route::get('/home', 'HomeController@index')->name('home');
 
@@ -42,12 +41,6 @@ Route::get('/games/{game}/edit', 'GameController@edit');
 
 Route::post('/games/{game}/update', 'GameController@update');
 
-//CategoryController//
-
-Route::get('/categories/', 'CategoryController@index');
-
-Route::get('/categories/{category}/games', 'CategoryController@show');
-
 //downloads//
 
 Route::get('/games/{game}/download', 'GameController@download');
@@ -55,3 +48,17 @@ Route::get('/games/{game}/download', 'GameController@download');
 //uploads//
 
 Route::post('upload', 'GameController@upload');
+
+
+//CategoryController//
+
+Route::get('/categories/', 'CategoryController@index');
+
+Route::get('/categories/{category}/games', 'CategoryController@show');
+
+//FeedbackController//
+
+Route::post('/games/{game}/feedback', 'FeedbackController@store');
+
+//ProfileController//
+

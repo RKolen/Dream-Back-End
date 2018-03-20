@@ -3,12 +3,12 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\User;
 
 class AuthenticationController extends Controller
 {
 	public function test() 
     {
-
         return view('/test');
     }
 
@@ -26,13 +26,32 @@ class AuthenticationController extends Controller
 
     public function checklogin () 
     {
+        $logindetails = new \stdClass();
+        $logindetails->loggedin = false;
+
     	if (isset($_COOKIE['notpassword']) && isset($_COOKIE['email'])) {
 
-    		echo $_COOKIE['notpassword'];
-    		echo $_COOKIE['email'];
-    	} else {
-    		echo "cookies not found";
+            $password = $_COOKIE['notpassword'];
+            $email = $_COOKIE['email'];
+            $user = User::where('email', $email)->first();
+
+
+            if(!$user == null) 
+            {   
+                $passwordcorrect = password_verify ($password, $user->password);
+                if($passwordcorrect == true) 
+                {   
+                    $logindetails->loggedin = true;
+
+                    $logindetails->name = $user->name;
+                    $logindetails->id = $user->id;
+                }
+            }
     	}
+
+        $json = json_encode($logindetails);
+
+        return $json;
 	}
 
 	public function logout()
