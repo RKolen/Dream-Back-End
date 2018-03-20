@@ -49,6 +49,17 @@ Route::get('/games/{game}/download', 'GameController@download');
 
 Route::post('upload', 'GameController@upload');
 
+//search options//
+
+Route::post('/games/search', 'GameController@search');
+
+Route::get('/finddownloads', 'GameController@findDownloads');
+
+Route::get('/findname', 'GameController@findName');
+
+Route::get('/findrating', 'GameController@findRating');
+
+Route::get('/findupdates', 'GameController@findUpdates');
 
 //CategoryController//
 
@@ -56,9 +67,17 @@ Route::get('/categories/', 'CategoryController@index');
 
 Route::get('/categories/{category}/games', 'CategoryController@show');
 
+//ProfileController//
+Route::get('/profile/{profileId}/follow', 'ProfileController@followUser');
+
+Route::get('/profile/{profileId}/unfollow', 'ProfileController@unFollowUser');
+
+Route::get('/profile', 'ProfileController@read');
+
+
 //FeedbackController//
 
 Route::post('/games/{game}/feedback', 'FeedbackController@store');
 
-//ProfileController//
+
 

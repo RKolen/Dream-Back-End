@@ -44,12 +44,17 @@ class GameController extends Controller
         if ($passwordcorrect == true) {
 
         $path = storage_path('app/private/games/' . $game . '/download.jpg');
+
         return response()->download($path);
+        Game::where('id', $game)->increment('downloads');
 
         } else {
             abort(404);
         }
     }
+
+
+
 
     public function image($game)
     {   
@@ -80,17 +85,43 @@ class GameController extends Controller
         return view('/games.edit', compact('game'));
     }
 
-    public function update($id) {
-
-        
+    public function update($id) 
+    {
 
         $game = Game::find($id);
         $game->title = request()->title;
         $game->description = request()->description;
 
         $game->save();
+        Game::where('id', $game)->increment('updates');
 
         return redirect('/games/' . $id .'/edit');
+    }
+
+    public function search(Request $request) 
+    {
+
+        $search = $request->search;
+
+        $games = Game::where('body','LIKE','%' . $search . '%')->Latest()->get();
+        return view('index', compact('games'));
+
+    }
+    public function findDownloads(Request $request)
+    {   
+        $games = Game::orderBy('downloads', 'desc')->get()->toArray();  
+
+        $json = json_encode($games);
+    
+        return $json;
+    }
+    public function findName()
+    {   
+        $games = Game::orderBy('title', 'asc')->get()->toArray();  
+
+        $json = json_encode($games);
+    
+        return $json;
     }
 
 }
