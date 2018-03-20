@@ -9,11 +9,7 @@ use App\User;
 
 class GameController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+    
     public function index()
     {
         $discover = Game::orderBy('downloads', 'asc')->take(4)->get()->toArray();

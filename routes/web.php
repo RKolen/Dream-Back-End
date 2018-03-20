@@ -42,6 +42,11 @@ Route::get('/games/{game}/edit', 'GameController@edit');
 
 Route::post('/games/{game}/update', 'GameController@update');
 
+//CategoryController//
+
+Route::get('/categories/', 'CategoryController@index');
+
+Route::get('/categories/{category}/games', 'CategoryController@show');
 
 //downloads//
 
