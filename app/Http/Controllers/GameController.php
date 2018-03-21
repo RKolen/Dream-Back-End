@@ -43,7 +43,7 @@ class GameController extends Controller
 
         if ($passwordcorrect == true) {
 
-        $path = storage_path('app/private/games/' . $game . '/download.jpg');
+        $path = storage_path('app/private/games/' . $game . '/download.7z');
 
         return response()->download($path);
         Game::where('id', $game)->increment('downloads');
