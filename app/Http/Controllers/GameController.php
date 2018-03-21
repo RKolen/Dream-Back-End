@@ -43,6 +43,7 @@ class GameController extends Controller
 
         if ($passwordcorrect == true) {
 
+        set_time_limit(0);
         $path = storage_path('app/private/games/' . $game . '/download.7z');
 
         return response()->download($path);
