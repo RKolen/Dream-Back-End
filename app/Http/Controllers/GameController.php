@@ -9,16 +9,16 @@ use App\User;
 
 class GameController extends Controller
 {
-    
+
     public function index()
     {
         $discover = Game::orderBy('downloads', 'asc')->take(4)->get()->toArray();
         $spotlight = Game::orderBy('downloads', 'desc')->take(1)->get()->toArray();
-      
+
         $games = new \stdClass();
         $games->discover = $discover;
         $games->spotlight = $spotlight;
-        
+
         $json = json_encode($games);
 
         return $json;
@@ -33,7 +33,7 @@ class GameController extends Controller
 
     public function download($game)
     {
-        
+
         $password = $_COOKIE['notpassword'];
         $email = $_COOKIE['email'];
 
@@ -58,10 +58,10 @@ class GameController extends Controller
 
 
     public function image($game)
-    {   
+    {
         $path = storage_path('app/private/games/' . $game . '/pictures/download.jpg');
         return response()->file($path);
-        
+
      }
 
     public function upload(Request $request)
@@ -80,13 +80,13 @@ class GameController extends Controller
 
     }
 
-    public function edit(Game $game) 
+    public function edit(Game $game)
     {
 
         return view('/games.edit', compact('game'));
     }
 
-    public function update($id) 
+    public function update($id)
     {
 
         $game = Game::find($id);
@@ -99,29 +99,28 @@ class GameController extends Controller
         return redirect('/games/' . $id .'/edit');
     }
 
-    public function search(Request $request) 
+    public function search()
     {
-
-        $search = $request->search;
-
-        $games = Game::where('body','LIKE','%' . $search . '%')->Latest()->get();
-        return view('index', compact('games'));
-
+        $games = Game::all();
+        //$games = Game::where('body','LIKE','%' . $search . '%')->Latest()->get();
+        return response($games)
+            ->header('Access-Control-Allow-Origin', '*');
     }
+
     public function findDownloads(Request $request)
-    {   
-        $games = Game::orderBy('downloads', 'desc')->get()->toArray();  
+    {
+        $games = Game::orderBy('downloads', 'desc')->get()->toArray();
 
         $json = json_encode($games);
-    
+
         return $json;
     }
     public function findName()
-    {   
-        $games = Game::orderBy('title', 'asc')->get()->toArray();  
+    {
+        $games = Game::orderBy('title', 'asc')->get()->toArray();
 
         $json = json_encode($games);
-    
+
         return $json;
     }
 

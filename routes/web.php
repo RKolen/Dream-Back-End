@@ -51,7 +51,7 @@ Route::post('upload', 'GameController@upload');
 
 //search options//
 
-Route::post('/games/search', 'GameController@search');
+Route::get('/search', 'GameController@search');
 
 Route::get('/finddownloads', 'GameController@findDownloads');
 
@@ -78,6 +78,3 @@ Route::get('/profile', 'ProfileController@read');
 //FeedbackController//
 
 Route::post('/games/{game}/feedback', 'FeedbackController@store');
-
-
-
