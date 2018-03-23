@@ -39,19 +39,13 @@ class ProfileController extends Controller
 
 	}
 
-	public function read() {
+	public function read($profileId) {
 
-		if (Auth::check()) {
+      $user = User::find($profileId);
+      if(! $user) {
+        return "User doesn't exist";
+      }
 
-			$user = Auth::user();
-
-			return view('profile.page', compact('user'));
-
-		} else {
-
-			return redirect('/login');
-
-		}
-
+      return $user;
 	}
 }

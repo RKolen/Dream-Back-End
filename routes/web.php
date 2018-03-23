@@ -63,7 +63,7 @@ Route::get('/findupdates', 'GameController@findUpdates');
 
 //CategoryController//
 
-Route::get('/categories/', 'CategoryController@index');
+Route::get('/categories', 'CategoryController@index');
 
 Route::get('/categories/{category}/games', 'CategoryController@show');
 
@@ -72,7 +72,7 @@ Route::get('/profile/{profileId}/follow', 'ProfileController@followUser');
 
 Route::get('/profile/{profileId}/unfollow', 'ProfileController@unFollowUser');
 
-Route::get('/profile', 'ProfileController@read');
+Route::get('/profile/{profileId}', 'ProfileController@read');
 
 
 //FeedbackController//
