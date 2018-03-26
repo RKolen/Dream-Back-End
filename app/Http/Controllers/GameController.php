@@ -6,6 +6,7 @@ use App\Game;
 use Storage;
 use Illuminate\Http\Request;
 use App\User;
+use DB;
 
 class GameController extends Controller
 {
@@ -34,23 +35,31 @@ class GameController extends Controller
     public function download($game)
     {
 
-        $password = $_COOKIE['notpassword'];
-        $email = $_COOKIE['email'];
 
-        $email2 = User::where('email', $email)->first();
+        if (isset($_COOKIE['email']) && isset($_COOKIE['notpassword']))
+        {
+            $password = $_COOKIE['notpassword'];
+            $email = $_COOKIE['email'];
 
-        $passwordcorrect = password_verify ($password, $email2->password);
 
-        if ($passwordcorrect == true) {
+            $email2 = User::where('email', $email)->first();
 
-        set_time_limit(0);
-        $path = storage_path('app/private/games/' . $game . '/download.7z');
+            $passwordcorrect = password_verify ($password, $email2->password);
 
-        return response()->download($path);
-        Game::where('id', $game)->increment('downloads');
+            if ($passwordcorrect == true) {
 
+            set_time_limit(0);
+            $path = storage_path('app/private/games/' . $game . '/download.7z');
+
+            return response()->download($path);
+            Game::where('id', $game)->increment('downloads');
+
+
+            } else {
+                echo 'test';
+            }
         } else {
-            abort(404);
+             echo "test 2";
         }
     }
 
@@ -65,18 +74,22 @@ class GameController extends Controller
      }
 
     public function upload(Request $request)
-    {
-       $files = $request->file('file');
+    {   
+        $file = $request->file('file');
+        $title = $request->input('title');
+        $description = $request->input('description');
+        $picture = $request->picture;
 
-       if(!empty($files)):
-
-            foreach($files as $file):
-                Storage::put($file->getClientOriginalName(), file_get_contents($file));
-            endforeach;
-
-            endif;
-
-       return \Response::json(array('success' => true));
+        $id = DB::table('games')->insertGetId([
+            'title' => $title,
+            'description' => $description 
+        ]);
+        Storage::disk('local')->makeDirectory('/' . $id . '/pictures');
+        $path = $picture->storeAs('/' . $id . '/pictures', 'download.jpg' ,['disk' => 'local']);
+       // $path = $request->file('image')->store('images', ['disk' => 'public']);  
+        $pathfile = $file->storeAs('/' . $id , 'download.7z' ,['disk' => 'local']);
+        
+        return \Response::json(array('success' => true, 'id' => $id)) ->header('Access-Control-Allow-Origin', '*');
 
     }
 
@@ -86,12 +99,13 @@ class GameController extends Controller
         return view('/games.edit', compact('game'));
     }
 
-    public function update($id)
-    {
 
-        $game = Game::find($id);
-        $game->title = request()->title;
-        $game->description = request()->description;
+    public function update() 
+    {   
+       //$game = Game::find($id);
+       //return $_POST['description'];
+        $game->description = $_POST['description'];
+       // return $_POST['description'];
 
         $game->save();
         Game::where('id', $game)->increment('updates');
@@ -122,6 +136,10 @@ class GameController extends Controller
         $json = json_encode($games);
 
         return $json;
-    }
+    } 
 
+    public function test(){
+        $game = 11;
+        Storage::disk('local')->makeDirectory('/' . $game . '/pictures');
+    }
 }

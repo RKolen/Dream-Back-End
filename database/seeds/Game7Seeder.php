@@ -19,8 +19,6 @@ class Game7Seeder extends Seeder
             'points' => 9,
             'rating' => 1,
             'downloads' => 2500,
-            'game_picture' => "https://usercontent2.hubstatic.com/13822637_f520.jpg",
-            'game_files' => "https://usercontent2.hubstatic.com/13822637_f520.jpg",
             'created_at' => "2018-03-02 01:01:01"
            
         ]);

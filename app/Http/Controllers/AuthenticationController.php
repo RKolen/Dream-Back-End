@@ -20,7 +20,7 @@ class AuthenticationController extends Controller
         	setcookie('notpassword', $_POST['password'], time() + (86400*30), "/");
         	echo "login successful";
         } else {
-        	echo "GTFO!";
+        	echo "login failed";
         }
     }
 

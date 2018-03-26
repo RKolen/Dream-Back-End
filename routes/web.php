@@ -78,3 +78,6 @@ Route::get('/profile/{profileId}', 'ProfileController@read');
 //FeedbackController//
 
 Route::post('/games/{game}/feedback', 'FeedbackController@store');
+
+
+Route::get('/testdb','gamecontroller@test');
