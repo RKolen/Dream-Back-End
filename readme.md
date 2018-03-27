@@ -7,7 +7,7 @@ Team members:Riccardo Parrello & Raymond Kolen
 - Trello Board: https://trello.com/b/4yvv08PP/dream
 - Github front-end https://github.com/riccardoparrello/Dream-Front-End
 - Github back-end https://github.com/riccardoparrello/Dream-Back-End
-- Live version: https://dream.vps.codegorilla.nl/
+- Live version: https://dream.riccardoparrello.nl/
 
 
 ## Introduction:
