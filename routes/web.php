@@ -45,6 +45,10 @@ Route::post('/games/{game}/update', 'GameController@update');
 
 Route::get('/games/{game}/download', 'GameController@download');
 
+Route::get('downloads/app', function(){
+  return response()->download("/var/www/html/Dream-Back-End/storage/app/private/app/Dream Desktop Client.exe");
+});
+
 //uploads//
 
 Route::post('upload', 'GameController@upload');
