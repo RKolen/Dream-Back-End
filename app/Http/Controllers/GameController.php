@@ -89,7 +89,7 @@ class GameController extends Controller
        // $path = $request->file('image')->store('images', ['disk' => 'public']);  
         $pathfile = $file->storeAs('/' . $id , 'download.7z' ,['disk' => 'local']);
         
-        return \Response::json(array('success' => true, 'id' => $id)) ->header('Access-Control-Allow-Origin', '*');
+        return \Response::json(array('success' => true, 'id' => $id))->header('Access-Control-Allow-Origin', '*');
 
     }
 

@@ -59,4 +59,20 @@ class AuthenticationController extends Controller
        setcookie('email', "", time() -3600);
         	setcookie('notpassword', "", time() -3600);
     }
+
+    public function store(Request $request)
+    {
+        $user = new User();
+        $user->name = $request->input('name');
+        $user->email = $request->input('email');
+        $user->password = bcrypt($request->input('password'));
+        $user->save();
+
+
+        // setcookie('email', $request->input('email'), time() + (86400*30), "/", env('DOMAIN_NAME'));
+        // setcookie('notpassword', $request->input('password'), time() + (86400*30), "/", env('DOMAIN_NAME'));
+
+        return \Response::json(array('success' => true ))->header('Access-Control-Allow-Origin', '*');
+        
+    }
 }

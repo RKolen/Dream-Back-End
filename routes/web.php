@@ -24,6 +24,8 @@ Route::get('/checklogin', 'AuthenticationController@checklogin');
 
 Route::get('/logout', 'AuthenticationController@logout');
 
+Route::post('/store', 'AuthenticationController@store');
+
 //home//
 
 Route::get('/home', 'HomeController@index')->name('home');

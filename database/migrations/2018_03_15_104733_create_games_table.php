@@ -19,7 +19,9 @@ class CreateGamesTable extends Migration
             $table->text('description');
             $table->integer('points')->default(0);
             $table->integer('rating')->default(0);
+            $table->integer('updates')->default(0);
             $table->integer('downloads')->default(0);
+            $table->integer('user_id')->default(1);
             $table->timestamps();
         });
     }
