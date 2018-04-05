@@ -64,8 +64,6 @@ class GameController extends Controller
     }
 
 
-
-
     public function image($game)
     {
         $path = storage_path('app/private/games/' . $game . '/pictures/download.jpg');
@@ -85,8 +83,7 @@ class GameController extends Controller
             'description' => $description 
         ]);
         Storage::disk('local')->makeDirectory('/' . $id . '/pictures');
-        $path = $picture->storeAs('/' . $id . '/pictures', 'download.jpg' ,['disk' => 'local']);
-       // $path = $request->file('image')->store('images', ['disk' => 'public']);  
+        $path = $picture->storeAs('/' . $id . '/pictures', 'download.jpg' ,['disk' => 'local']); 
         $pathfile = $file->storeAs('/' . $id , 'download.7z' ,['disk' => 'local']);
         
         return \Response::json(array('success' => true, 'id' => $id))->header('Access-Control-Allow-Origin', '*');
@@ -102,11 +99,8 @@ class GameController extends Controller
 
     public function update() 
     {   
-       //$game = Game::find($id);
-       //return $_POST['description'];
         $game->description = $_POST['description'];
-       // return $_POST['description'];
-
+    
         $game->save();
         Game::where('id', $game)->increment('updates');
 
@@ -114,11 +108,28 @@ class GameController extends Controller
     }
 
     public function search()
-    {
-        $games = Game::all();
-        //$games = Game::where('body','LIKE','%' . $search . '%')->Latest()->get();
-        return response($games)
-            ->header('Access-Control-Allow-Origin', '*');
+    {   
+        if (isset($_GET['orderby']))
+        {
+            if($_GET['orderby'] == "downloads")
+            {
+                $games = Game::orderBy('downloads', 'desc')->get()->toArray();
+            }
+            elseif ($_GET['orderby'] == "least")
+            {
+                $games = Game::orderBy('downloads', 'asc')->get()->toArray();
+            }
+             else
+            {
+                $games = Game::all();
+            }
+        }
+       else
+       {
+            $games = Game::all();
+        }
+       return response($games)
+           ->header('Access-Control-Allow-Origin', '*');
     }
 
     public function findDownloads(Request $request)
