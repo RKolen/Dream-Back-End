@@ -20,7 +20,7 @@ class CategoryController extends Controller
     {
         $categories = category::get();
         $games = $category->game()->Latest()->with('category.game')->get();
-        dd($games);
+
         return view('welcome', compact('games', 'categories'));
     }
 }

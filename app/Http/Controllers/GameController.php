@@ -7,6 +7,7 @@ use Storage;
 use Illuminate\Http\Request;
 use App\User;
 use DB;
+use App\Category;
 
 class GameController extends Controller
 {
@@ -77,17 +78,22 @@ class GameController extends Controller
         $title = $request->input('title');
         $description = $request->input('description');
         $picture = $request->picture;
+        $category = $request->input('category');
 
         $id = DB::table('games')->insertGetId([
             'title' => $title,
             'description' => $description 
         ]);
+        $game = Game::find($id);
+
+        $game->category()->attach(request('category_id'));
+
         Storage::disk('local')->makeDirectory('/' . $id . '/pictures');
         $path = $picture->storeAs('/' . $id . '/pictures', 'download.jpg' ,['disk' => 'local']); 
         $pathfile = $file->storeAs('/' . $id , 'download.7z' ,['disk' => 'local']);
         
         return \Response::json(array('success' => true, 'id' => $id))->header('Access-Control-Allow-Origin', '*');
-
+       
     }
 
     public function edit(Game $game)
@@ -108,49 +114,44 @@ class GameController extends Controller
     }
 
     public function search()
-    {   
-        if (isset($_GET['orderby']))
+    {   //if all categories are searched for
+        if (isset($_GET['orderby']) && $_GET['category'] =="all" )
         {
-            if($_GET['orderby'] == "downloads")
-            {
-                $games = Game::orderBy('downloads', 'desc')->get()->toArray();
-            }
-            elseif ($_GET['orderby'] == "least")
-            {
-                $games = Game::orderBy('downloads', 'asc')->get()->toArray();
-            }
-             else
-            {
-                $games = Game::all();
-            }
+           
+            $games = Game::orderBy('downloads', $_GET['orderby'])->get()->toArray();
         }
-       else
-       {
-            $games = Game::all();
-        }
+        else
+        {   //if certain categories are searched for
+            $games = [];
+            $gamesforcategory = DB::table('category_game')->where( 'category_id', $_GET['category'])->get()->pluck(['game_id']);
+
+            foreach ($gamesforcategory as $game)
+            {
+                $result = Game::where('id', $game)->get();
+                array_push($games, $result[0]);
+            }   
+            //filters the categories in most popular order
+            if ($_GET['orderby'] == "desc")
+            {
+                foreach ($games as $key => $row)
+                {
+                    $downloads[$key] = $row['downloads'];
+                }
+            array_multisort($downloads, SORT_DESC, $games);
+            }
+            //filters the categories in least popular order
+            elseif ($_GET['orderby'] == "asc")
+            {
+                foreach ($games as $key => $row)
+                {
+                    $downloads[$key] = $row['downloads'];
+                }
+            array_multisort($downloads, SORT_ASC, $games);
+            }
+            
+       }
        return response($games)
-           ->header('Access-Control-Allow-Origin', '*');
+            ->header('Access-Control-Allow-Origin', '*');
     }
 
-    public function findDownloads(Request $request)
-    {
-        $games = Game::orderBy('downloads', 'desc')->get()->toArray();
-
-        $json = json_encode($games);
-
-        return $json;
-    }
-    public function findName()
-    {
-        $games = Game::orderBy('title', 'asc')->get()->toArray();
-
-        $json = json_encode($games);
-
-        return $json;
-    } 
-
-    public function test(){
-        $game = 11;
-        Storage::disk('local')->makeDirectory('/' . $game . '/pictures');
-    }
 }
