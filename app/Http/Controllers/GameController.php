@@ -78,7 +78,7 @@ class GameController extends Controller
         $title = $request->input('title');
         $description = $request->input('description');
         $picture = $request->picture;
-        $category = $request->input('category');
+        $category = $request->input('category_id');
 
         $id = DB::table('games')->insertGetId([
             'title' => $title,
@@ -92,7 +92,7 @@ class GameController extends Controller
         $path = $picture->storeAs('/' . $id . '/pictures', 'download.jpg' ,['disk' => 'local']); 
         $pathfile = $file->storeAs('/' . $id , 'download.7z' ,['disk' => 'local']);
         
-        return \Response::json(array('success' => true, 'id' => $id))->header('Access-Control-Allow-Origin', '*');
+         return \Response::json(array('success' => true, 'id' => $id))->header('Access-Control-Allow-Origin', '*');
        
     }
 
