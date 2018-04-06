@@ -51,9 +51,9 @@ class GameController extends Controller
 
             set_time_limit(0);
             $path = storage_path('app/private/games/' . $game . '/download.7z');
-
-            return response()->download($path);
             Game::where('id', $game)->increment('downloads');
+            return response()->download($path);
+            
 
 
             } else {
