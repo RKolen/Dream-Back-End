@@ -53,7 +53,7 @@ class GameController extends Controller
             $path = storage_path('app/private/games/' . $game . '/download.7z');
             Game::where('id', $game)->increment('downloads');
             return response()->download($path);
-            
+
 
 
             } else {
@@ -73,7 +73,7 @@ class GameController extends Controller
      }
 
     public function upload(Request $request)
-    {   
+    {
         $file = $request->file('file');
         $title = $request->input('title');
         $description = $request->input('description');
@@ -82,18 +82,18 @@ class GameController extends Controller
 
         $id = DB::table('games')->insertGetId([
             'title' => $title,
-            'description' => $description 
+            'description' => $description
         ]);
         $game = Game::find($id);
 
         $game->category()->attach(request('category_id'));
 
         Storage::disk('local')->makeDirectory('/' . $id . '/pictures');
-        $path = $picture->storeAs('/' . $id . '/pictures', 'download.jpg' ,['disk' => 'local']); 
+        $path = $picture->storeAs('/' . $id . '/pictures', 'download.jpg' ,['disk' => 'local']);
         $pathfile = $file->storeAs('/' . $id , 'download.7z' ,['disk' => 'local']);
-        
+
          return \Response::json(array('success' => true, 'id' => $id))->header('Access-Control-Allow-Origin', '*');
-       
+
     }
 
     public function edit(Game $game)
@@ -103,10 +103,10 @@ class GameController extends Controller
     }
 
 
-    public function update() 
-    {   
+    public function update()
+    {
         $game->description = $_POST['description'];
-    
+
         $game->save();
         Game::where('id', $game)->increment('updates');
 
@@ -114,44 +114,49 @@ class GameController extends Controller
     }
 
     public function search()
-    {   //if all categories are searched for
-        if (isset($_GET['orderby']) && $_GET['category'] =="all" )
+    {
+        if (isset($_GET['orderby']) && isset($_GET['category']))
         {
-           
+          //if all categories are searched for
+          if ($_GET['category'] == "all"){
             $games = Game::orderBy('downloads', $_GET['orderby'])->get()->toArray();
-        }
-        else
-        {   //if certain categories are searched for
-            $games = [];
-            $gamesforcategory = DB::table('category_game')->where( 'category_id', $_GET['category'])->get()->pluck(['game_id']);
+          }
+          //if certain categories are searched for
+          else {
+                $games = [];
+                $gamesforcategory = DB::table('category_game')->where( 'category_id', $_GET['category'])->get()->pluck(['game_id']);
 
-            foreach ($gamesforcategory as $game)
-            {
-                $result = Game::where('id', $game)->get();
-                array_push($games, $result[0]);
-            }   
-            //filters the categories in most popular order
-            if ($_GET['orderby'] == "desc")
-            {
-                foreach ($games as $key => $row)
+                foreach ($gamesforcategory as $game)
                 {
-                    $downloads[$key] = $row['downloads'];
+                    $result = Game::where('id', $game)->get();
+                    array_push($games, $result[0]);
                 }
-            array_multisort($downloads, SORT_DESC, $games);
-            }
-            //filters the categories in least popular order
-            elseif ($_GET['orderby'] == "asc")
-            {
-                foreach ($games as $key => $row)
+                //filters the categories in most popular order
+                if ($_GET['orderby'] == "desc")
                 {
-                    $downloads[$key] = $row['downloads'];
+                    foreach ($games as $key => $row)
+                    {
+                        $downloads[$key] = $row['downloads'];
+                    }
+                array_multisort($downloads, SORT_DESC, $games);
                 }
-            array_multisort($downloads, SORT_ASC, $games);
-            }
-            
-       }
-       return response($games)
+                //filters the categories in least popular order
+                elseif ($_GET['orderby'] == "asc")
+                {
+                    foreach ($games as $key => $row)
+                    {
+                        $downloads[$key] = $row['downloads'];
+                    }
+                array_multisort($downloads, SORT_ASC, $games);
+                }
+          }
+        }
+        //default case, return all games
+        else
+        {
+          $games = Game::all();
+        }
+        return response($games)
             ->header('Access-Control-Allow-Origin', '*');
     }
-
 }
