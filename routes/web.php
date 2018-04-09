@@ -24,6 +24,8 @@ Route::get('/checklogin', 'AuthenticationController@checklogin');
 
 Route::get('/logout', 'AuthenticationController@logout');
 
+Route::post('/store', 'AuthenticationController@store');
+
 //home//
 
 Route::get('/home', 'HomeController@index')->name('home');
@@ -45,39 +47,30 @@ Route::post('/games/{game}/update', 'GameController@update');
 
 Route::get('/games/{game}/download', 'GameController@download');
 
+Route::get('downloads/app', function(){
+  return response()->download("/var/www/html/Dream-Back-End/storage/app/private/app/Dream Desktop Client.exe");
+});
+
 //uploads//
 
 Route::post('upload', 'GameController@upload');
 
 //search options//
 
-Route::post('/games/search', 'GameController@search');
+Route::get('/search', 'GameController@search');
 
-Route::get('/finddownloads', 'GameController@findDownloads');
-
-Route::get('/findname', 'GameController@findName');
-
-Route::get('/findrating', 'GameController@findRating');
-
-Route::get('/findupdates', 'GameController@findUpdates');
 
 //CategoryController//
 
-Route::get('/categories/', 'CategoryController@index');
-
-Route::get('/categories/{category}/games', 'CategoryController@show');
 
 //ProfileController//
-Route::get('/profile/{profileId}/follow', 'ProfileController@followUser');
+// Route::get('/profile/{profileId}/follow', 'ProfileController@followUser');
 
-Route::get('/profile/{profileId}/unfollow', 'ProfileController@unFollowUser');
+// Route::get('/profile/{profileId}/unfollow', 'ProfileController@unFollowUser');
 
-Route::get('/profile', 'ProfileController@read');
+// Route::get('/profile/{profileId}', 'ProfileController@read');
 
 
 //FeedbackController//
 
-Route::post('/games/{game}/feedback', 'FeedbackController@store');
-
-
-
+//Route::post('/games/{game}/feedback', 'FeedbackController@store');

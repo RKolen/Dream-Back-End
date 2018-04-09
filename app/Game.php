@@ -18,4 +18,10 @@ class Game extends Model
 		return $this->belongsToMany(Category::class);
 
 	}
+	public function feedback()
+	{
+
+		return $this->hasMany(Feedback::class)->Latest();
+
+	}
 }
