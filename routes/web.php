@@ -68,7 +68,7 @@ Route::get('/search', 'GameController@search');
 
 // Route::get('/profile/{profileId}/unfollow', 'ProfileController@unFollowUser');
 
-// Route::get('/profile/{profileId}', 'ProfileController@read');
+ Route::get('/profile/{profileId}', 'ProfileController@read');
 
 
 //FeedbackController//
