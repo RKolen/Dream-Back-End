@@ -122,34 +122,36 @@ class GameController extends Controller
             $games = Game::orderBy('downloads', $_GET['orderby'])->get()->toArray();
           }
           //if certain categories are searched for
-          else {
+            else {
                 $games = [];
                 $gamesforcategory = DB::table('category_game')->where( 'category_id', $_GET['category'])->get()->pluck(['game_id']);
-
-                foreach ($gamesforcategory as $game)
+                if (count($gamesforcategory) != 0)
                 {
-                    $result = Game::where('id', $game)->get();
-                    array_push($games, $result[0]);
-                }
-                //filters the categories in most popular order
-                if ($_GET['orderby'] == "desc")
-                {
-                    foreach ($games as $key => $row)
+                    foreach ($gamesforcategory as $game)
                     {
-                        $downloads[$key] = $row['downloads'];
+                        $result = Game::where('id', $game)->get();
+                        array_push($games, $result[0]);
                     }
-                array_multisort($downloads, SORT_DESC, $games);
+                    //filters the categories in most popular order
+                        if ($_GET['orderby'] == "desc")
+                        {
+                            foreach ($games as $key => $row)
+                            {
+                                $downloads[$key] = $row['downloads'];
+                            }
+                        array_multisort($downloads, SORT_DESC, $games);
+                        }
+                        //filters the categories in least popular order
+                        elseif ($_GET['orderby'] == "asc")
+                        {
+                            foreach ($games as $key => $row)
+                            {
+                                $downloads[$key] = $row['downloads'];
+                            }
+                        array_multisort($downloads, SORT_ASC, $games);
+                        }
                 }
-                //filters the categories in least popular order
-                elseif ($_GET['orderby'] == "asc")
-                {
-                    foreach ($games as $key => $row)
-                    {
-                        $downloads[$key] = $row['downloads'];
-                    }
-                array_multisort($downloads, SORT_ASC, $games);
-                }
-          }
+            }
         }
         //default case, return all games
         else
