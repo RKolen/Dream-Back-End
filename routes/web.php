@@ -59,31 +59,18 @@ Route::post('upload', 'GameController@upload');
 
 Route::get('/search', 'GameController@search');
 
-Route::get('/finddownloads', 'GameController@findDownloads');
-
-Route::get('/findname', 'GameController@findName');
-
-Route::get('/findrating', 'GameController@findRating');
-
-Route::get('/findupdates', 'GameController@findUpdates');
 
 //CategoryController//
 
-Route::get('/categories', 'CategoryController@index');
-
-Route::get('/categories/{category}/games', 'CategoryController@show');
 
 //ProfileController//
-Route::get('/profile/{profileId}/follow', 'ProfileController@followUser');
+// Route::get('/profile/{profileId}/follow', 'ProfileController@followUser');
 
-Route::get('/profile/{profileId}/unfollow', 'ProfileController@unFollowUser');
+// Route::get('/profile/{profileId}/unfollow', 'ProfileController@unFollowUser');
 
-Route::get('/profile/{profileId}', 'ProfileController@read');
+// Route::get('/profile/{profileId}', 'ProfileController@read');
 
 
 //FeedbackController//
 
-Route::post('/games/{game}/feedback', 'FeedbackController@store');
-
-
-Route::get('/testdb','gamecontroller@test');
+//Route::post('/games/{game}/feedback', 'FeedbackController@store');

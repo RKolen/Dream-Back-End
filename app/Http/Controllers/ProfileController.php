@@ -9,43 +9,5 @@ use Illuminate\Http\Request;
 
 class ProfileController extends Controller
 {
-   public function followUser(int $profileId)
-	{
-	  	$user = User::find($profileId);
-
-	  	if(! $user) {
-
-	     	return redirect()->back()->with('error', 'User does not exist.');
-
-		}
-
-		$user->followers()->attach(auth()->user()->id);
-
-		return redirect()->back()->with('success', 'Successfully followed the user.');
-	}
-
-	public function unFollowUser(int $profileId)
-	{
-	  	$user = User::find($profileId);
-	  	if(! $user) {
-
-	     	return redirect()->back()->with('error', 'User does not exist.');
-	 	}
-
-	$user->followers()->detach(auth()->user()->id);
-
-
-	return redirect()->back()->with('success', 'Successfully unfollowed the user.');
-
-	}
-
-	public function read($profileId) {
-
-      $user = User::find($profileId);
-      if(! $user) {
-        return "User doesn't exist";
-      }
-
-      return $user;
-	}
+  
 }
