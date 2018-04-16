@@ -1,18 +1,18 @@
 <form Method="POST" action="update">
 
-		{{ csrf_field() }}
+	{{ csrf_field() }}
 
-		<div >
+	<div >
 
-			<label for="title">titel</label>
-			<input name="title" value="{{ $game->title }}">
+		<label for="title">titel</label>
+		<input name="title" value="{{ $game->title }}">
 
-		</div>
-		<div >
+	</div>
+	<div >
 
-			<textarea name="description" class="form-control">{{ $game->description }}</textarea>
+		<textarea name="description" class="form-control">{{ $game->description }}</textarea>
 
-		</div>
+	</div>
 	<button type="submit" class="btn btn-primary">update</button>
 	
 </form>

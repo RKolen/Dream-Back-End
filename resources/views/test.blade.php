@@ -1,18 +1,18 @@
 <form Method="POST" action="login">
 
-		{{ csrf_field() }}
+	{{ csrf_field() }}
 
-		<div >
+	<div >
 
-			<label for="email">email</label>
-			<input name="email" value="email">
+		<label for="email">email</label>
+		<input name="email" value="email">
 
-		</div>
-		<div >
-			<label for="password">password</label>
-			<input name="password" >
+	</div>
+	<div >
+		<label for="password">password</label>
+		<input name="password" >
 
-		</div>
+	</div>
 	<button type="submit" class="btn btn-primary">login</button>
 	
 </form>

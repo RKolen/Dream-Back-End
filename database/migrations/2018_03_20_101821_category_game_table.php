@@ -13,7 +13,8 @@ class CategoryGameTable extends Migration
      */
     public function up()
     {
-        Schema::create('category_game', function (Blueprint $table) {
+        Schema::create('category_game', function (Blueprint $table) 
+        {
             $table->integer('game_id');
             $table->integer('category_id');
             $table->primary(['game_id', 'category_id']);

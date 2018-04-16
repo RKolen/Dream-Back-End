@@ -12,9 +12,10 @@ class ProfileController extends Controller
 	public function read($profileId) 
 	{
       	$user = User::find($profileId);
-     	if(! $user) {
-        return "User doesn't exist";
+     	if(! $user) 
+     	{
+        	return "User doesn't exist";
     	}
-    return $user;
+    	return $user;
 	}
 }

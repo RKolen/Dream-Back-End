@@ -12,7 +12,8 @@ class CreateFeedbackTable extends Migration
     // }
     public function up()
     {
-        Schema::create('feedback', function (Blueprint $table) {
+        Schema::create('feedback', function (Blueprint $table) 
+        {
             $table->increments('id');
             $table->integer('game_id');
             $table->integer('user_id')->unsigned()->nullable()->default(5);

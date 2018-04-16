@@ -11,24 +11,24 @@ class FeedbackController extends Controller
    
      public function store(Game $game)
     {       
-            $this->validate(request(), [ 
-                'description' => 'required|min:2',
-                'user_id' => 'required'
-            ]);
-            
-            $feedback = new Feedback;
+        $this->validate(request(), [ 
+            'description' => 'required|min:2',
+            'user_id' => 'required'
+        ]);
+        
+        $feedback = new Feedback;
 
-            $feedback->game_id = $game->id;
-            $feedback->user_id = request()->user_id;
-            $feedback->description = request()->description;
+        $feedback->game_id = $game->id;
+        $feedback->user_id = request()->user_id;
+        $feedback->description = request()->description;
 
-            $feedback->save();
+        $feedback->save();
 
-            
+        
 
-           // \Mail::to($game->user->email)->send( new Feedbackreceived($game));
+       // \Mail::to($game->user->email)->send( new Feedbackreceived($game));
 
-            return back();
+        return back();
         
 
     }
